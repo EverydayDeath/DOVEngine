@@ -22,4 +22,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Users\Ryan S\Pictures\Trees\Trees\bush2.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
