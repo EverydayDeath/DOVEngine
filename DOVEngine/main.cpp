@@ -2,21 +2,41 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    // create the window
+    sf::RenderWindow window(sf::VideoMode(800, 600), "DOVEngine");
 
+	window.setTitle("DOVEngine");
+	window.setVerticalSyncEnabled(true); 
+
+    // run the program as long as the window is open
     while (window.isOpen())
     {
+        // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+			switch(event.type)
+			{
+				case sf::Event::Closed:
+					window.close();
+					break;
+
+				case sf::Event::KeyPressed:
+					//do input stuff
+					break;
+
+				default:
+					break;
+			}
         }
 
-        window.clear();
-        window.draw(shape);
+       // clear the window with black color
+		window.clear(sf::Color::Red);
+
+        // draw everything here...
+        // window.draw(...);
+
+        // end the current frame
         window.display();
     }
 
