@@ -24,8 +24,13 @@ int main()
 
 	sprite.setPosition(100, 25);
 
-	sf::CircleShape shape(10.f);
-    shape.setFillColor(sf::Color::Green);
+	sf::RectangleShape shape;
+
+	shape.setSize(sf::Vector2f(20, 20));
+
+	sf::Color shapeCol(200, 80, 200);
+
+    shape.setFillColor(shapeCol);
 
 	shape.setPosition(100,25);
 
@@ -35,6 +40,10 @@ int main()
 	float charY = 25;
 	float moveSpeedX = 25;
 	float moveSpeedY = 25;
+
+	float gravity = 39.81;
+	bool jumping = false;
+	float jumpSpeed = 40;
 
 	// run the program as long as the window is open
     while (window.isOpen())
@@ -63,30 +72,66 @@ int main()
 						charMoving = true;
 						moveSpeedX = -25;
 						break;
+					case sf::Keyboard::Space:
+						if(!jumping)
+						{
+							jumping = true;
+							moveSpeedY = -jumpSpeed;
+						}
+						break;
 					}
 					break;
 				case sf::Event::KeyReleased:
+					switch(event.key.code)
+					{
+					case sf::Keyboard::Right:
+						// left key is pressed: move our character
+						if(moveSpeedX > 0)
+						{
+//							charMoving = false;
+							moveSpeedX = 0;
+						}
+						break;
+					case sf::Keyboard::Left:
+						if(moveSpeedX < 0)
+						{
+//							charMoving = false;
+							moveSpeedX = 0;
+						}
+						break;
+					}
 					break;
 				default:
 					break;
 			}
         }
 
-		if(charX <= 5)
-			moveSpeedX = 25;
-		if(charX >= windowX-5)
-			moveSpeedX = -25;
-		if(charY <= 5)
-			moveSpeedY = 25;
-		if(charY >= windowY-5)
-			moveSpeedY = -25;
+		if(charX <= 0 && moveSpeedX < 0)
+			moveSpeedX = 0;
+		if(charX >= windowX-20 && moveSpeedX > 0)
+			moveSpeedX = 0;
+
+		if(charY <= windowY-20)
+		{
+			if(charMoving)
+				moveSpeedY += gravity * deltaTime.asSeconds() * 3;
+		}
+		else
+		{
+			if(moveSpeedY > 0)
+			{
+				charY = windowY-20;
+				jumping = false;
+				moveSpeedY = 0;
+			}
+		}
 
 		if(charMoving)
 		{
 			charX += 10 * moveSpeedX * deltaTime.asSeconds();
 			charY += 10 * moveSpeedY * deltaTime.asSeconds();
 		}
-
+			
        // clear the window with black color
 		window.clear(sf::Color::Black);
 
